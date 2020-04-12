@@ -147,11 +147,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="app.cpp" />
     <ClCompile Include="ConsoleApplication1.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="app.h" />
+    <ClInclude Include="AIPlayer.h" />
+    <ClInclude Include="App.h" />
+    <ClInclude Include="GameStruct.h" />
+    <ClInclude Include="Graphics.h" />
+    <ClInclude Include="HumanPlayer.h" />
+    <ClInclude Include="includes.h" />
+    <ClInclude Include="NetPlayer.h" />
+    <ClInclude Include="Player.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,47 +1,81 @@
 #pragma once
-#include <iostream>
-#include <windows.h>
-#include <Winuser.h>
-#include <conio.h>
-#include <stdlib.h>
-#include <string>
-using namespace std;
+#include "includes.h"
 
-class app
+class App
 {
 private:
-
-public:
 	int tempPosition;
-	struct GameChar
-	{
-		char X = 'X';
-		char O = 'O';
-		char blank = ' ';
-	};
-	char field[9];
+	GameStruct::GameFields * gFields = new GameStruct::GameFields;
+	GameStruct* gStruct = new GameStruct;
+	Player * player1 = nullptr;
+	Player * player2 = nullptr;
+	Graphics* graphics = new Graphics(gStruct);
+	
+private:
 	
 public:
-	
-	app()
-	{
-		std::cout << "constructor inialized" << std::endl;
-		initGame();
-	}
-	~app()
-	{
-		std::cout << "destructor initialized" << std::endl;
-	}
-	void createMatch()
-	{
-		std::cout << "match created" << std::endl;
-	
-	}
-	void drawGraphics(char field[]);
-	void startScreen();
 	void initGame();
-	void makeMove(char gc, int position);
-	void fillField(char gc, int position);
-	
+	void play(char player, int& tempPosition);
+	App() {};
+	~App() {
+		delete gFields;
+		gFields = nullptr;
+		delete gStruct;
+		gStruct = nullptr;
+		delete player1;
+		player1 = nullptr;
+		delete player2;
+		player2 = nullptr;
+		delete graphics;
+		graphics = nullptr;
+	};
+	void createMatch();
 };
+
+
+inline void App::initGame()
+{
+	if (gStruct->matchCreated == true) {
+		
+		play('X', tempPosition);
+		graphics->drawGraphics(gFields, tempPosition);
+
+	}
+	else {
+		for (int i = 0; i <= sizeof(gFields->fields); i++)
+		{
+			gFields->fields[i] = gStruct->blank;
+		}
+		graphics->drawStartScreen();
+		createMatch();
+	}
+		
+}
+
+
+inline void App::play(char player, int &tempPosition)
+{
+	gFields->fields[tempPosition -1] = player;
+}
+
+inline void App::createMatch()
+{
+	if (gStruct->opponentPlayer == 0)
+	{
+		player1 = new HumanPlayer(gStruct->pSymbol_X);
+		player2 = new AIPlayer(gStruct->pSymbol_O);
+		gStruct->matchCreated = true;
+		gStruct->pSymbol1 = player1->pSymbol;
+		gStruct->pSymbol2 = player2->pSymbol;
+	}
+	else if (gStruct->opponentPlayer == 1)
+	{
+		player1 = new HumanPlayer(gStruct->pSymbol_X);
+		player2 = new NetPlayer(gStruct->pSymbol_O);
+		gStruct->matchCreated = true;
+		gStruct->pSymbol1 = player1->pSymbol;
+		gStruct->pSymbol2 = player2->pSymbol;
+	}
+}
+
 
